@@ -29,7 +29,7 @@
 		{ssl, false}, % whether to connect on 465 in ssl mode
 		{tls, if_available}, % always, never, if_available
 		{auth, if_available},
-		{hostname, smtp_util:guess_FQDN()},
+		{hostname, gen_smtp_client}, % smtp_util:guess_FQDN()},
 		{retries, 1} % how many retries per smtp host on temporary failure
 	]).
 
