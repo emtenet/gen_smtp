@@ -54,10 +54,15 @@ mxlookup(Domain) ->
 
 %% @doc guess the current host's fully qualified domain name
 guess_FQDN() ->
-	{ok, Hostname} = inet:gethostname(),
-	{ok, Hostent} = inet:gethostbyname(Hostname),
-	{hostent, FQDN, _Aliases, inet, _, _Addresses} = Hostent,
-	FQDN.
+	case application:get_env(gen_smtp, hostname) of
+		{ok, FQDN} ->
+			FQDN;
+		undefined ->
+			{ok, Hostname} = inet:gethostname(),
+			{ok, Hostent} = inet:gethostbyname(Hostname),
+			{hostent, FQDN, _Aliases, inet, _, _Addresses} = Hostent,
+			FQDN
+	end.
 
 %% @doc Compute the CRAM digest of `Key' and `Data'
 -spec(compute_cram_digest/2 :: (Key :: binary(), Data :: string()) -> binary()).
